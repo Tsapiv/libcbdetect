@@ -104,3 +104,8 @@ fabric.properties
 *.out
 *.app
 
+env
+venv
+.cache
+/bin
+/lib

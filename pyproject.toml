@@ -1,0 +1,45 @@
+[build-system]
+requires = ["scikit-build-core>=0.10", "pybind11", "pybind11-stubgen", "numpy"]
+build-backend = "scikit_build_core.build"
+
+
+[project]
+name = "pycbdetect"
+version = "0.1.0"
+description="Unofficial implemention of http://www.cvlibs.net/software/libcbdetect/ in C++ with Python bindings"
+readme = "README.md"
+requires-python = ">=3.9"
+
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+
+[tool.scikit-build]
+wheel.expand-macos-universal-tags = true
+minimum-version = "build-system.requires"
+cmake.args = ["-DSHARED_LIB=OFF", "-DPYTHON_BINDINGS=ON"]
+cmake.build-type = "Release"
+build.verbose = true
+logging.level = "DEBUG"
+
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+log_cli_level = "INFO"
+filterwarnings = [
+  "error",
+  "ignore::pytest.PytestCacheWarning",
+]
+testpaths = ["tests"]
+
+
+[tool.cibuildwheel]
+build-frontend = "build[uv]"
+test-command = "pytest {project}/tests"
+test-extras = ["test"]
+
+[tool.cibuildwheel.pyodide]
+build-frontend = {name = "build", args = ["--exports", "whole_archive"]}
