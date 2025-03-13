@@ -1,6 +1,3 @@
-find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
-find_package(pybind11 CONFIG REQUIRED)
-
 cmake_policy(SET CMP0095 NEW)
 
 include_directories(${PROJECT_SOURCE_DIR}/include/)
@@ -10,6 +7,7 @@ pybind11_add_module(pycbdetect
         pycbdetect.cpp
         WITH_SOABI)
 
+target_link_libraries(pycbdetect PRIVATE cvnp)
 target_link_libraries(pycbdetect PRIVATE ${PROJECT_NAME})
 target_link_libraries(pycbdetect PRIVATE pybind11::embed)
 
